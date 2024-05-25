@@ -9,5 +9,5 @@ public class UserDTO {
     private String email;
     private String username;
     private UserRole role;
-    private Integer points;
+    private Long points;
 }

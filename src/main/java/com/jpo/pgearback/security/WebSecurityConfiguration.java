@@ -27,7 +27,8 @@ public class WebSecurityConfiguration implements WebMvcConfigurer{
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login", "/sign-up", "/order/**").permitAll();
-                    auth.requestMatchers("/api/**").authenticated();
+                    auth.requestMatchers("/admin/**").authenticated();
+                    auth.requestMatchers("/customer/**").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(v_authfilter, UsernamePasswordAuthenticationFilter.class);
@@ -37,7 +38,6 @@ public class WebSecurityConfiguration implements WebMvcConfigurer{
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
-//    public PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

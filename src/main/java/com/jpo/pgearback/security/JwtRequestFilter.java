@@ -32,16 +32,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (v_authHeader != null && v_authHeader.startsWith("Bearer ")) {
             v_token = v_authHeader.substring(7);
             v_username = v_jwtUtil.extractUsername(v_token);
+            logger.debug("Extracted username: " + v_username);
         }
 
         if(v_username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails v_userDetails = v_userDetailsService.loadUserByUsername(v_username);
 
             if(v_jwtUtil.validateToken(v_token, v_userDetails)){
+                logger.debug("Token is valid for user: " + v_username);
                 UsernamePasswordAuthenticationToken v_authToken = new UsernamePasswordAuthenticationToken(v_userDetails, null, v_userDetails.getAuthorities());
                 v_authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(v_authToken);
+            } else{
+                logger.debug("Token is invalid for user: " + v_username);
             }
         }
 

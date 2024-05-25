@@ -55,12 +55,10 @@ public class AuthServiceImpl implements AuthService{
         user.setUsername(p_signupRequest.getUsername());
         user.setPassword(v_encoder.encode(p_signupRequest.getPassword()));
         user.setRole(UserRole.CUSTOMER);
-        user.setPoints(0);
+        user.setPoints(0L);
         User createdUser = v_userRepository.save(user);
-
         UserDTO v_userDTO = new UserDTO();
         v_userDTO.setId(createdUser.getId());
-
         return v_userDTO;
     }
 

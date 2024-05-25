@@ -16,7 +16,7 @@ public class User {
     @Column(name = "user_email")
     private String email;
 
-    @Column(name = "user_mdp")
+    @Column(name = "user_password")
     private String password;
 
     @Column(name="user_name")
@@ -27,7 +27,7 @@ public class User {
     private UserRole role;
 
     @Column(name = "user_points")
-    private Integer points;
+    private Long points;
 
     @Lob
     @Column(columnDefinition = "longblob", name="user_image")

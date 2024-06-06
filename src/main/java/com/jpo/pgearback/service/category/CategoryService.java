@@ -1,4 +1,4 @@
-package com.jpo.pgearback.service.admin.category;
+package com.jpo.pgearback.service.category;
 
 import com.jpo.pgearback.dto.CategoryDTO;
 import com.jpo.pgearback.entity.Category;

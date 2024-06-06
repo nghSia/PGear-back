@@ -7,6 +7,7 @@ import com.jpo.pgearback.service.auth.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthServiceImpl v_authService;
+    @Autowired
+    public AuthController(AuthServiceImpl v_authService) {
+        this.v_authService = v_authService;
+    }
 
     @PostMapping("/login")
     public void createAuthenticationToken(@RequestBody AuthenticationRequest p_authentificationRequest,

@@ -1,9 +1,9 @@
-package com.jpo.pgearback.controller.admin;
+package com.jpo.pgearback.controller;
 
 import com.jpo.pgearback.dto.CategoryDTO;
 import com.jpo.pgearback.entity.Category;
-import com.jpo.pgearback.service.admin.category.CategoryServiceImpl;
-import lombok.RequiredArgsConstructor;
+import com.jpo.pgearback.service.category.CategoryServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +11,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
-@RequiredArgsConstructor
-public class AdminCategoryController {
+@RequestMapping("/category")
+
+public class CategoryController {
 
     private final CategoryServiceImpl v_categoryService;
 
-    @PostMapping("category")
+    @Autowired
+    public CategoryController(CategoryServiceImpl v_categoryService) {
+        this.v_categoryService = v_categoryService;
+    }
+
+    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/create")
     public ResponseEntity<?> createCategory(@RequestBody CategoryDTO p_category) {
         if(v_categoryService.hasCategoryWithNomCategory(p_category.getNomCategory())){
             return new ResponseEntity<>("category already exist", HttpStatus.NOT_ACCEPTABLE);

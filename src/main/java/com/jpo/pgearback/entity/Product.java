@@ -1,6 +1,7 @@
 package com.jpo.pgearback.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jpo.pgearback.dto.ProductDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -35,4 +36,17 @@ public class Product {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Category category;
+
+
+    public ProductDTO getDTO(){
+        ProductDTO newProductDTO = new ProductDTO();
+        newProductDTO.setId(this.id);
+        newProductDTO.setNomProduit(this.nomProduit);
+        newProductDTO.setPrix(this.prix);
+        newProductDTO.setDescriptionProduit(this.descriptionProduit);
+        newProductDTO.setImgProduit(this.imgProduit);
+        newProductDTO.setCategoryId(this.category.getId());
+        newProductDTO.setNomCategory(this.category.getNomCategory());
+        return newProductDTO;
+    }
 }

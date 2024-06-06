@@ -27,8 +27,7 @@ public class WebSecurityConfiguration implements WebMvcConfigurer{
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login", "/sign-up", "/order/**").permitAll();
-                    auth.requestMatchers("/admin/**").authenticated();
-                    auth.requestMatchers("/customer/**").authenticated();
+                    auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(v_authfilter, UsernamePasswordAuthenticationFilter.class);

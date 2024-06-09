@@ -24,6 +24,7 @@ public class ProductServiceImpl implements ProductService{
         this.categoryRepository = categoryRepository;
     }
 
+    @Override
     public ProductDTO addProduct(ProductDTO p_product) throws IOException {
         Product productACreer = new Product();
         productACreer.setNomProduit(p_product.getNomProduit());
@@ -37,8 +38,27 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.save(productACreer).getDTO();
     }
 
+    @Override
     public List<ProductDTO> getAllProduct(){
         List<Product> products = productRepository.findAll();
         return products.stream().map(Product::getDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDTO> getAllProductByProductName(String p_nomProduit){
+        List<Product> products = productRepository.findAllByNomProduitContaining(p_nomProduit);
+        return products.stream().map(Product::getDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean deleteProduct(Long p_uuid)  {
+        Product productASupp = productRepository.findById(p_uuid).orElseThrow();
+        productRepository.deleteById(p_uuid);
+        return true;
+    }
+
+    @Override
+    public Boolean hasProductWithNomProduit(String p_nomCategory) {
+        return productRepository.findFirstByNomProduit(p_nomCategory).isPresent();
     }
 }

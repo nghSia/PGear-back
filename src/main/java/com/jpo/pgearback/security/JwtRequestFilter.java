@@ -1,11 +1,13 @@
 package com.jpo.pgearback.security;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,10 +31,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String v_authHeader = request.getHeader("Authorization");
         String v_token = null;
         String v_username = null;
+        String v_role = null;
+
 
         if (v_authHeader != null && v_authHeader.startsWith("Bearer ")) {
             v_token = v_authHeader.substring(7);
             v_username = v_jwtUtil.extractUsername(v_token);
+            // Extraction des claims du token, incluant le rôle
+            Claims claims = v_jwtUtil.extractAllClaims(v_token);
+            v_role = claims.get("role", String.class);
             logger.debug("Extracted username: " + v_username);
         }
 
@@ -40,7 +48,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             if(v_jwtUtil.validateToken(v_token, v_userDetails)){
                 logger.debug("Token is valid for user: " + v_username);
-                UsernamePasswordAuthenticationToken v_authToken = new UsernamePasswordAuthenticationToken(v_userDetails, null, v_userDetails.getAuthorities());
+//                UsernamePasswordAuthenticationToken v_authToken = new UsernamePasswordAuthenticationToken(v_userDetails, null, v_userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken v_authToken = new UsernamePasswordAuthenticationToken(v_userDetails, null, List.of(new SimpleGrantedAuthority(v_role)));
                 v_authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(v_authToken);

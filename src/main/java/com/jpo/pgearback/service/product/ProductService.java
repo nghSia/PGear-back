@@ -8,4 +8,7 @@ import java.util.List;
 public interface ProductService {
     ProductDTO addProduct(ProductDTO p_product) throws IOException;
     List<ProductDTO> getAllProduct();
+    List<ProductDTO> getAllProductByProductName(String p_name);
+    boolean deleteProduct(Long p_uuid);
+    Boolean hasProductWithNomProduit(String p_nomProduit);
 }

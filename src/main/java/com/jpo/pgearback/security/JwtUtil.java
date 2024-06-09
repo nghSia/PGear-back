@@ -21,8 +21,9 @@ public class JwtUtil {
     @Value("${security.jwt.secret-key}")
     private String v_secretKey;
 
-    public String generateToken(String p_username) {
+    public String generateToken(String p_username, String p_role) {
         Map<String, Object> v_claims = new HashMap<>();
+        v_claims.put("role", p_role);
         return createToken(v_claims, p_username);
     }
 
@@ -52,7 +53,7 @@ public class JwtUtil {
         return p_claimsResolver.apply(v_claims);
     }
 
-    private Claims extractAllClaims(String p_token) {
+    public Claims extractAllClaims(String p_token) {
         return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(p_token).getBody();
     }
 

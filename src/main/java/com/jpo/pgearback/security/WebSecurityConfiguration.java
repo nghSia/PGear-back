@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableAspectJAutoProxy
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class WebSecurityConfiguration implements WebMvcConfigurer{
     private final JwtRequestFilter v_authfilter;
 
@@ -26,7 +28,8 @@ public class WebSecurityConfiguration implements WebMvcConfigurer{
         p_http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login", "/sign-up", "/order/**").permitAll();
+                    auth.requestMatchers("/login", "/sign-up").permitAll();
+                    auth.requestMatchers("/product/get-all", "product/find/**", "category/get-all").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

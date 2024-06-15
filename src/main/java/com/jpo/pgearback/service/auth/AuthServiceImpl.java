@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService{
         return v_userRepository.findFirstByEmail(p_email).isPresent();
     }
 
-    //appel automatic apres le constructeur
+
     @PostConstruct
     public void createAdminAccount(){
         User v_adminUser = v_userRepository.findByRole(UserRole.ADMIN);
@@ -92,7 +92,7 @@ public class AuthServiceImpl implements AuthService{
 
         final UserDetails v_userDetails = v_userDetailsService.loadUserByUsername(p_authentificationRequest.getEmail());
         Optional<User> v_optionalUser = v_userRepository.findFirstByEmail(v_userDetails.getUsername());
-        final String v_jwt = v_jwtUtil.generateToken(v_userDetails.getUsername(), v_optionalUser.get().getRole().name());
+        final String v_jwt = v_jwtUtil.generateToken(v_userDetails.getUsername());
 
         if(v_optionalUser.isPresent()) {
             p_response.getWriter().write(new JSONObject()

@@ -42,8 +42,8 @@ public class WebSecurityConfiguration implements WebMvcConfigurer{
     public BCryptPasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration p_authenticationConfiguration) throws Exception {
+        return p_authenticationConfiguration.getAuthenticationManager();
     }
 
 

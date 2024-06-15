@@ -30,7 +30,6 @@ public class CategoryController {
             return new ResponseEntity<>("category already exist", HttpStatus.NOT_ACCEPTABLE);
         }
         Category v_newCategory = v_categoryService.createCategory(p_category);
-        //return new ResponseEntity<>(v_categoryService, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED).body(v_newCategory);
     }
 

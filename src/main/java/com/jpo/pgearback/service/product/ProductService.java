@@ -11,4 +11,5 @@ public interface ProductService {
     List<ProductDTO> getAllProductByProductName(String p_name);
     boolean deleteProduct(Long p_uuid);
     Boolean hasProductWithNomProduit(String p_nomProduit);
+    List<ProductDTO> getAllProductByCategory(String p_nomCategorie);
 }

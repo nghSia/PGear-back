@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/product")
-@EnableMethodSecurity
 public class ProductController {
     private final ProductService productService;
 
@@ -46,6 +44,17 @@ public class ProductController {
             return ResponseEntity.ok(productDTOS);
         } else {
             List<ProductDTO> productDTOS = productService.getAllProductByProductName(p_name);
+            return ResponseEntity.ok(productDTOS);
+        }
+    }
+
+    @GetMapping("/find/category/{p_nomCategory}")
+    public ResponseEntity<List<ProductDTO>> getAllProductByCategory(@PathVariable String p_nomCategory) {
+        if(p_nomCategory == null){
+            List<ProductDTO> productDTOS = productService.getAllProduct();
+            return ResponseEntity.ok(productDTOS);
+        } else {
+            List<ProductDTO> productDTOS = productService.getAllProductByCategory(p_nomCategory);
             return ResponseEntity.ok(productDTOS);
         }
     }

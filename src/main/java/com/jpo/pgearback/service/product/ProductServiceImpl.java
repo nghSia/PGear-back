@@ -46,8 +46,14 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductDTO> getAllProductByProductName(String p_nomProduit){
-        List<Product> products = productRepository.findAllByNomProduitContaining(p_nomProduit);
-        return products.stream().map(Product::getDTO).collect(Collectors.toList());
+        List<Product> v_products = productRepository.findAllByNomProduitContaining(p_nomProduit);
+        return v_products.stream().map(Product::getDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDTO> getAllProductByCategory(String p_nomCategorie){
+        List<Product> v_products = productRepository.findByCategoryNomCategory(p_nomCategorie);
+        return v_products.stream().map(Product::getDTO).collect(Collectors.toList());
     }
 
     @Override

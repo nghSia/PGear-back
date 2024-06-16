@@ -3,8 +3,11 @@ package com.jpo.pgearback.service.auth;
 import com.jpo.pgearback.dto.AuthenticationRequest;
 import com.jpo.pgearback.dto.SignupRequest;
 import com.jpo.pgearback.dto.UserDTO;
+import com.jpo.pgearback.entity.Cart;
 import com.jpo.pgearback.entity.User;
+import com.jpo.pgearback.enums.CartStatus;
 import com.jpo.pgearback.enums.UserRole;
+import com.jpo.pgearback.repository.CartRepository;
 import com.jpo.pgearback.repository.UserRepository;
 import com.jpo.pgearback.security.JwtUtil;
 import jakarta.annotation.PostConstruct;
@@ -31,6 +34,7 @@ public class AuthServiceImpl implements AuthService{
     private final AuthenticationManager v_authenticationManager;
     private final UserDetailsService v_userDetailsService;
     private final JwtUtil v_jwtUtil;
+    private final CartRepository v_cartRepository;
 
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String HEADER_STRING = "Authorization";
@@ -39,24 +43,34 @@ public class AuthServiceImpl implements AuthService{
     public AuthServiceImpl(UserRepository p_userRepository, BCryptPasswordEncoder p_encoder,
                            AuthenticationManager p_authmanager,
                            UserDetailsService p_userDetailsService,
-                           JwtUtil p_jwtUtil) {
+                           JwtUtil p_jwtUtil, CartRepository p_cartRepository) {
         this.v_userRepository = p_userRepository;
         this.v_encoder = p_encoder;
         this.v_authenticationManager = p_authmanager;
         this.v_userDetailsService = p_userDetailsService;
         this.v_jwtUtil = p_jwtUtil;
+        this.v_cartRepository = p_cartRepository;
     }
 
     @Override
     public UserDTO createUser(SignupRequest p_signupRequest){
         User user = new User();
-
         user.setEmail(p_signupRequest.getEmail());
         user.setUsername(p_signupRequest.getUsername());
         user.setPassword(v_encoder.encode(p_signupRequest.getPassword()));
         user.setRole(UserRole.CUSTOMER);
         user.setPoints(0L);
         User createdUser = v_userRepository.save(user);
+
+        Cart v_createdCart = new Cart();
+        v_createdCart.setTotalPrice(0D);
+        v_createdCart.setPriceAfterReduction(0D);
+        v_createdCart.setDiscountAmount(0D);
+        v_createdCart.setUser(createdUser);
+        v_createdCart.setCartStatus(CartStatus.WAITING);
+        v_cartRepository.save(v_createdCart);
+
+
         UserDTO v_userDTO = new UserDTO();
         v_userDTO.setId(createdUser.getId());
         return v_userDTO;

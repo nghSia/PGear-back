@@ -33,13 +33,4 @@ public class CartProducts {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="cart_id")
     private Cart cart;
-
-    @PreRemove
-    public void preRemove() {
-        if (cart != null) {
-            cart.setTotalPrice(cart.getTotalPrice() - priceProduct);
-            cart.setPriceAfterReduction(cart.getPriceAfterReduction() - priceProduct);
-            cart.getCartProducts().remove(this);
-        }
-    }
 }

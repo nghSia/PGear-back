@@ -5,7 +5,6 @@ import com.jpo.pgearback.dto.SignupRequest;
 import com.jpo.pgearback.dto.UserDTO;
 import com.jpo.pgearback.service.auth.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -42,7 +42,7 @@ public class Cart {
     @Column(name="cart_tracking_num")
     private UUID trackingNum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
